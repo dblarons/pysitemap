@@ -20,12 +20,16 @@ To install pysitemap without the image or video extensions, use pip.
 
 * Option 1 : Install via pip ::
 
-	pip install pysitemap
+```
+pip install pysitemap
+```
+
 
 * Option 2 : If you have downloaded the source ::
 
-	python setup.py install
-
+```
+python setup.py install
+```
 
 Documentation
 -------------
@@ -33,7 +37,6 @@ Documentation
 #### Basic use
 
 ```python
-
 from pysitemap import SiteMap
 from datetime import datetime
 
@@ -46,14 +49,12 @@ site.add(
 )
 
 print site.to_string()
-
 ```
 
 
 #### Image Extension
 
 ```python
-
 from pysitemap import SiteMap
 from datetime import datetime
 
@@ -68,7 +69,6 @@ image_site.add(
 )
 
 print image_site.to_string()
-
 ```
 
 How to produce a Sitemap for a mobile site:
@@ -76,9 +76,7 @@ How to produce a Sitemap for a mobile site:
 #### Mobile Extension
 
 ```python
-
 mobile_site = SiteMap(domain='http://m.example.com', mobile=True)
-
 ```
 
 

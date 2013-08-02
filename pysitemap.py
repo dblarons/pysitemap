@@ -2,36 +2,62 @@
 
 
 def format_iso8601(obj, timezone):
-	updated = '%Y-%m-%dT%H:%M:%S' + timezone
-	return obj.strftime(updated)
+    updated = '%Y-%m-%dT%H:%M:%S' + timezone
+    return obj.strftime(updated)
+
 
 class SiteMap(object):
-	def __init__(self, *args, **kwargs):
-		self.timezone = kwargs.get('timezone', 'Z')
-		domain = kwargs.get('domain', None)
-		self._out = [
-			'<?xml version="1.0" encoding="UTF-8"?>',
-			'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
-		]
-		if domain:
-			self.add(loc=domain, priority=1)
+    def __init__(self, *args, **kwargs):
+        self.timezone = kwargs.get('timezone', 'Z')
+        domain = kwargs.get('domain', None)
+        self.mobile = kwargs.get('mobile', False)
+        if not self.mobile:
+            self._out = [
+                '<?xml version="1.0" encoding="UTF-8"?>',
+                '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+            ]
+        if self.mobile:
+            self._out = [
+                '<?xml version="1.0" encoding="UTF-8"?>',
+                '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0">'
+            ]
+        if domain:
+            self.add(loc=domain, priority=1)
 
-	def add(self, *args, **kwargs):
-		assert 'loc' in kwargs, 'loc is required'
-		assert len(kwargs['loc']) <= 2048, 'exceeded the maximum number of characters'
-		out = ['\t<url>']
-		out.append('\t\t<loc>%s</loc>' % kwargs['loc'])
-		if 'lastmod' in kwargs:
-			out.append('\t\t<lastmod>%s</lastmod>' % format_iso8601(kwargs['lastmod'], self.timezone))
-		if 'changefreq' in kwargs:
-			assert kwargs['changefreq'] in ['always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'], 'changefreq not correct'
-			out.append('\t\t<changefreq>%s</changefreq>' % kwargs['changefreq'])
-		if 'priority' in kwargs:
-			assert 0.0 <= kwargs['priority'] <= 1.0, 'priority out of range'
-		out.append('\t\t<priority>%s</priority>' % float(kwargs['priority'] if 'priority' in kwargs else 0.5))
-		out.append('\t</url>')
-		self._out.append("\n".join(out))
+    def add(self, *args, **kwargs):
+        assert 'loc' in kwargs, 'loc is required'
+        assert len(kwargs['loc']) <= 2048, 'exceeded the maximum number of characters'
+        out = ['\t<url>']
+        out.append('\t\t<loc>%s</loc>' % kwargs['loc'])
+        if 'lastmod' in kwargs:
+            out.append('\t\t<lastmod>%s</lastmod>' % format_iso8601(kwargs['lastmod'], self.timezone))
+        if 'changefreq' in kwargs:
+            assert kwargs['changefreq'] in ['always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'], 'changefreq not correct'
+            out.append('\t\t<changefreq>%s</changefreq>' % kwargs['changefreq'])
+        if 'priority' in kwargs:
+            assert 0.0 <= kwargs['priority'] <= 1.0, 'priority out of range'
+        self.add_image(kwargs, out)
+        if self.mobile:
+            out.append('\t\t<mobile:mobile/>')
+        out.append('\t\t<priority>%s</priority>' % float(kwargs['priority'] if 'priority' in kwargs else 0.5))
+        out.append('\t</url>')
+        self._out.append("\n".join(out))
 
-	def to_string(self):
-		self._out.append('</urlset>')
-		return "\n".join(self._out)
+    def add_image(self, kwargs, out):
+        if 'image_loc' in kwargs:
+            out.append('\t\t<image:image>')
+            out.append('\t\t\t<image:loc>%s</image:loc>' % kwargs['image_loc'])
+            # The following are not required
+            if 'caption' in kwargs:
+                out.append('\t\t\t<image:caption>%s</image:caption>' % kwargs['caption'])
+            if 'geo_location' in kwargs:
+                out.append('\t\t\t<image:geo_location>%s</image:geo_location>' % kwargs['geo_location'])
+            if 'image_title' in kwargs:
+                out.append('\t\t\t<image:title>%s</image:title>' % kwargs['image_title'])
+            if 'license' in kwargs:
+                out.append('\t\t\t<image:license>%s</image:license>' % kwargs['license'])
+            out.append('\t\t</image:image>')
+
+    def to_string(self):
+        self._out.append('</urlset>')
+        return "\n".join(self._out)

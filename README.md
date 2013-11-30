@@ -88,7 +88,9 @@ https://github.com/vitalvas/pysitemap/issues
 
 Author
 ------
+
 VitalVas <source@vitalvas.com>
+
 Vitaliy Vasilenko
 
 * http://github.com/vitalvas
@@ -96,7 +98,9 @@ Vitaliy Vasilenko
 
 Extension Author
 ------
+
 dblarons <aaron.h.smith@vanderbilt.edu>
+
 Aaron Smith
 
 * http://github.com/midnightdev

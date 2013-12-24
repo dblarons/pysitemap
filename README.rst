@@ -7,16 +7,11 @@ A Python library for generating a sitemap
 
 Latest Version
 --------------
-The latest version of this project (without the image or mobile extensions) can be found at http://github.com/vitalvas/pysitemap.
-The latest version of my fork is available at https://github.com/midnightdev/pysitemap
+The latest version of this project can be found at : http://github.com/vitalvas/pysitemap.
 
 
-Installation 
+Installation
 ------------
-To get the full extension, you need to download the source.
-
-To install pysitemap without the image or video extensions, use pip.
-
 * Option 1 : Install via pip ::
 
 	pip install pysitemap
@@ -28,8 +23,7 @@ To install pysitemap without the image or video extensions, use pip.
 
 Documentation
 -------------
-
-#### Basic use
+How to use? ::
 
 	from pysitemap import SiteMap
 	from datetime import datetime
@@ -38,34 +32,10 @@ Documentation
 	site.add(
 		loc='http://example.com/webhp', 
 		lastmod=datetime.now(), 
-		changefreq='weekly',
-		priority=0.5
-	)
+		changefreq='weekly')
 
 	print site.to_string()
 
-#### Image Extension
-
-	from pysitemap import SiteMap
-	from datetime import datetime
-
-	image_site = SiteMap(domain='http://example.com')
-	image_site.add(
-	    loc='http://example.com/webhp',
-	    image_loc='http://example.com/webhp/my_image.png',
-	    caption='This is a caption',
-	    geo_location='London, England',
-	    image_title='Awesome Image',
-	    license='http://example.com/license.txt'
-	)
-
-    print image_site.to_string()
-
-How to produce a Sitemap for a mobile site:
-
-#### Mobile Extension
-
-	mobile_site = SiteMap(domain='http://m.example.com', mobile=True)
 
 Reporting Bugs
 --------------
@@ -80,12 +50,3 @@ Vitaliy Vasilenko
 
 * http://github.com/vitalvas
 * http://www.vitalvas.com
-
-Extension Author
-------
-dblarons <aaron.h.smith@vanderbilt.edu>
-Aaron Smith
-
-* http://github.com/midnightdev
-* http://www.aaronhsmith.com
-
